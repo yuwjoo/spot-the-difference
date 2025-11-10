@@ -13,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "game",
     component: GameView,
   },
+  {
+    path: "/challenge",
+    name: "challenge",
+    component: () => import("../views/ChallengeView.vue"),
+  },
 ];
 
 const router = createRouter({
