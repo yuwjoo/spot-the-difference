@@ -15,8 +15,8 @@ export function useChallengeGame() {
   let timer: number;
 
   const imageSources = [
-    "/assets/downloaded-image (3).png",
-    "/assets/downloaded-image (2).png",
+    "/konglongA.png",
+    "/konglongB.png",
     // Add more image paths here
   ];
 
