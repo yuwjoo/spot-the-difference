@@ -10,6 +10,9 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "preserveValueImports": false,
     "sourceMap": true,
     "baseUrl": ".",
     "types": [

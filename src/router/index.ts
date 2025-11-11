@@ -1,4 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  type RouteRecordRaw,
+} from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import GameView from "../views/GameView.vue";
 
@@ -18,10 +22,15 @@ const routes: Array<RouteRecordRaw> = [
     name: "challenge",
     component: () => import("../views/ChallengeView.vue"),
   },
+  {
+    path: "/timingMode",
+    name: "timingMode",
+    component: () => import("../views/timingMode/TimingModeView.vue"),
+  },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes,
 });
 

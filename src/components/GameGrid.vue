@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { Image } from "@/game/gameLogic";
+import type { Image } from "@/game/gameLogic";
 
 defineProps<{
   images: Image[];
