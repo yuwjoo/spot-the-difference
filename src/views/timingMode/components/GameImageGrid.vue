@@ -25,7 +25,7 @@ const targetPos = ref(-1); // 目标图位置
 watch(
   () => props.imageSource,
   () => {
-    targetPos.value = Math.random() * imageCount.value;
+    targetPos.value = Math.ceil(Math.random() * imageCount.value);
   }
 );
 </script>
