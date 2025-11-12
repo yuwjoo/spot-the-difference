@@ -13,7 +13,7 @@
 import { ref } from "vue";
 import GameStatus from "@/components/GameStatus.vue";
 import GameGrid from "@/components/GameGrid.vue";
-import { generateLevel, Image } from "@/game/gameLogic";
+import { generateLevel, type Image } from "@/game/gameLogic";
 
 const score = ref(0);
 const level = ref(1);

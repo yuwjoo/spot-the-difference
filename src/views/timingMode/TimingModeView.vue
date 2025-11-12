@@ -1,16 +1,16 @@
 <template>
   <div class="timing-mode">
-    <game-image-grid :image-source="imageSource" :rows="10" :cols="6" />
+    <game-sticker-box :image-source="imageSource" :rows="10" :cols="4" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import GameImageGrid from "./components/GameImageGrid.vue";
+import GameStickerBox from "./components/GameStickerBox.vue";
 
 const imageSource = ref({
-  interferenceImagePath: "./sticker/lianhuanvB.png", // 干扰图路径
-  targetImagePath: "./sticker/lianhuanvC.png", // 目标图路径
+  interferenceImagePath: "./biel.jpg", // 干扰图路径
+  targetImagePath: "./biel.jpg", // 目标图路径
 });
 </script>
 

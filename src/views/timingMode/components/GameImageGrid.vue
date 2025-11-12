@@ -41,13 +41,16 @@ watch(
 </script>
 
 <style lang="scss" scoped>
+$image-space: 10px;
+
 .game-image-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-  padding: 10px;
-  height: 100vh;
+  display: inline-grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $image-space;
+  padding: $image-space;
   overflow-y: auto;
+  width: 80%;
+  box-sizing: border-box;
 
   &__item {
     position: relative;
