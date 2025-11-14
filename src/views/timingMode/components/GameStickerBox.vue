@@ -3,16 +3,13 @@
     <div class="game-sticker-box__grid">
       <div
         class="game-sticker-box__grid-item"
-        v-for="(_, index) in imageCount"
+        v-for="(sticker, index) in stickers"
         :key="index"
       >
-        <img
-          class="game-sticker-box__grid-item-img"
-          :src="
-            index === targetIndex
-              ? imageSource?.targetImagePath
-              : imageSource?.interferenceImagePath
-          "
+        <game-sticker
+          class="game-sticker-box__grid-item-sticker"
+          :sticker="sticker"
+          @click="onStickerClick(sticker, index)"
         />
       </div>
     </div>
@@ -20,30 +17,28 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from "vue";
-import type { Props } from "../types/gameImageGrid";
+import GameSticker from "./GameSticker.vue";
+import type { Props, Sticker, Emits } from "../types/gameStickerBox";
 
-const props = withDefaults(defineProps<Props>(), {
-  rows: 10,
+withDefaults(defineProps<Props>(), {
   cols: 4,
 });
 
-const imageCount = computed(() => props.cols * props.rows); // 图片总数
+const emit = defineEmits<Emits>();
 
-const targetIndex = ref(-1); // 目标图位置
-watch(
-  () => props.imageSource,
-  () => {
-    targetIndex.value = Math.floor(Math.random() * imageCount.value);
-  },
-  {
-    immediate: true,
-  }
-);
+/**
+ * 监听贴图点击
+ * @param sticker 贴图数据
+ * @param index 数组下标
+ */
+const onStickerClick = (sticker: Sticker, index: number) => {
+  emit("click-sticker", sticker, index);
+};
 </script>
 
 <style lang="scss" scoped>
-$image-space: 10px; // 图片间隔
+$grid-padding: 10px; // 网格内边距
+$item-space: 10px; // 元素间隔
 
 .game-sticker-box {
   display: flex;
@@ -55,25 +50,24 @@ $image-space: 10px; // 图片间隔
   &__grid {
     display: inline-grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: $image-space;
-    padding: $image-space;
+    gap: $item-space;
+    padding: $grid-padding;
     overflow-y: auto;
     box-sizing: border-box;
     max-width: 100%;
     max-height: 100%;
-    width: 70%;
+    width: 100%;
 
     &-item {
+      position: relative;
       height: 0;
       padding-bottom: 100%;
-      position: relative;
       //   aspect-ratio: 1/1;
 
-      &-img {
-        display: block;
+      &-sticker {
+        position: absolute;
         width: 100%;
         height: 100%;
-        position: absolute;
       }
     }
   }
