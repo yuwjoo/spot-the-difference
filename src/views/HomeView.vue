@@ -1,12 +1,17 @@
 <template>
   <div class="home-view">
     <img src="@/assets/cover.png" alt="cover" class="cover-image" />
-    <router-link to="/game" class="start-button">
-      <img src="@/assets/startGameBtn.png" alt="start game" />
-    </router-link>
-    <router-link to="/challenge" class="challenge-button">
+    <div class="home-view__buttons">
+      <router-link to="/timingMode" class="start-button">
+        <img src="@/assets/startGameBtn.png" alt="start game" />
+      </router-link>
+      <router-link to="/yangGame" class="start-button">
+        <img src="@/assets/startGameBtn.png" alt="start game" />
+      </router-link>
+    </div>
+    <!-- <router-link to="/challenge" class="challenge-button">
       <img src="@/assets/downloaded-image (2).png" alt="challenge mode" />
-    </router-link>
+    </router-link> -->
   </div>
 </template>
 
@@ -26,12 +31,19 @@
     object-fit: cover;
   }
 
-  .start-button {
+  &__buttons {
     position: fixed;
-    top: 70%;
+    top: 60%;
     left: 50%;
     transform: translateX(-50%);
-    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .start-button {
+    width: 150px;
 
     img {
       width: 100%;

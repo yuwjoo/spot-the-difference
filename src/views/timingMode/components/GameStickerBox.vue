@@ -1,6 +1,9 @@
 <template>
   <div class="game-sticker-box">
-    <div class="game-sticker-box__grid">
+    <div
+      class="game-sticker-box__grid"
+      :style="{ 'grid-template-columns': `repeat(${cols}, 1fr)` }"
+    >
       <div
         class="game-sticker-box__grid-item"
         v-for="(sticker, index) in stickers"
@@ -9,7 +12,9 @@
         <game-sticker
           class="game-sticker-box__grid-item-sticker"
           :sticker="sticker"
+          :disabled-click="disabledClick"
           @click="onStickerClick(sticker, index)"
+          @click-animation-end="onStickerClickAnimationEnd"
         />
       </div>
     </div>
@@ -19,6 +24,7 @@
 <script lang="ts" setup>
 import GameSticker from "./GameSticker.vue";
 import type { Props, Sticker, Emits } from "../types/gameStickerBox";
+import { ref } from "vue";
 
 withDefaults(defineProps<Props>(), {
   cols: 4,
@@ -26,13 +32,25 @@ withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
+const disabledClick = ref(false); // 是否禁用点击
+
 /**
  * 监听贴图点击
  * @param sticker 贴图数据
  * @param index 数组下标
  */
 const onStickerClick = (sticker: Sticker, index: number) => {
+  disabledClick.value = true;
   emit("click-sticker", sticker, index);
+};
+
+/**
+ * 监听贴图点击动画结束
+ * @param sticker 贴图数据
+ */
+const onStickerClickAnimationEnd = (sticker: Sticker) => {
+  disabledClick.value = false;
+  emit("click-animation-end", sticker);
 };
 </script>
 
@@ -44,12 +62,9 @@ $item-space: 10px; // 元素间隔
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
 
   &__grid {
     display: inline-grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: $item-space;
     padding: $grid-padding;
     overflow-y: auto;
