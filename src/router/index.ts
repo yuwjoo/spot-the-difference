@@ -32,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "yangGame",
     component: () => import("../views/yangGame/YangGameView.vue"),
   },
+  {
+    path: "/yangLeGame",
+    name: "yangLeGame",
+    component: () => import("../views/yangLeGame/YangLeGameView.vue"),
+  },
 ];
 
 const router = createRouter({
