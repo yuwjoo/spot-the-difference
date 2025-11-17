@@ -11,7 +11,7 @@ export interface CardData {
   isTop: boolean;
 }
 
-export function useCardMap(options: Options): CardData[] {
+export function useCardMap(options: Options) {
   const { availablePointMap, availablePointArr } = initAvailableZone(
     options.mapTemplate
   );
@@ -27,23 +27,59 @@ export function useCardMap(options: Options): CardData[] {
     }
   }
 
-  const cardDataList: CardData[] = [];
-  cardMap.forEach((layer, z) => {
-    layer.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        if (cell > -1) {
-          cardDataList.push({
-            x,
-            y,
-            z,
-            isTop: cell === 0,
-          });
-        }
+  /**
+   * 获取卡片数据列表
+   * @returns 卡片数据列表
+   */
+  function getCardDataList(): CardData[] {
+    const cardDataList: CardData[] = [];
+    cardMap.forEach((layer, z) => {
+      layer.forEach((row, y) => {
+        row.forEach((cell, x) => {
+          if (cell > -1) {
+            cardDataList.push({
+              x,
+              y,
+              z,
+              isTop: cell === 0,
+            });
+          }
+        });
       });
     });
-  });
+    return cardDataList;
+  }
 
-  return cardDataList;
+  /**
+   * 移除卡片
+   * @param param 卡片位置信息
+   * @returns 卡片数据列表
+   */
+  function removeCard({
+    x,
+    y,
+    z,
+  }: Pick<CardData, "x" | "y" | "z">): CardData[] {
+    if (cardMap[z][y][x] === 0) {
+      cardMap[z][y][x] = -1;
+
+      for (let i = z - 1; i >= 0; i--) {
+        if (cardMap[i][y][x] > 0) cardMap[i][y][x] -= 1;
+        if (cardMap[i][y]?.[x - 1] > 0) cardMap[i][y][x - 1] -= 1;
+        if (cardMap[i][y]?.[x + 1] > 0) cardMap[i][y][x + 1] -= 1;
+        if (cardMap[i][y - 1]?.[x] > 0) cardMap[i][y - 1][x] -= 1;
+        if (cardMap[i][y - 1]?.[x - 1] > 0) cardMap[i][y - 1][x - 1] -= 1;
+        if (cardMap[i][y - 1]?.[x + 1] > 0) cardMap[i][y - 1][x + 1] -= 1;
+        if (cardMap[i][y + 1]?.[x] > 0) cardMap[i][y + 1][x] -= 1;
+        if (cardMap[i][y + 1]?.[x - 1] > 0) cardMap[i][y + 1][x - 1] -= 1;
+        if (cardMap[i][y + 1]?.[x + 1] > 0) cardMap[i][y + 1][x + 1] -= 1;
+      }
+    }
+
+    return getCardDataList();
+  }
+
+  return { cardDataList: getCardDataList(), removeCard };
 }
 
 /**
@@ -117,6 +153,8 @@ function randomRule(
         (cardMap[i][y + 1]?.[x + 1] ?? -1) === -1
       ) {
         z = i;
+      } else {
+        break;
       }
     }
 
@@ -128,17 +166,16 @@ function randomRule(
     cardMap[z][y][x] = 0;
     cardArr.push([x, y, z]);
 
-    const nZ = z - 1;
-    if (nZ >= 0) {
-      if (cardMap[nZ][y][x] >= 0) cardMap[nZ][y][x] += 1;
-      if (cardMap[nZ][y]?.[x - 1] >= 0) cardMap[nZ][y][x - 1] += 1;
-      if (cardMap[nZ][y]?.[x + 1] >= 0) cardMap[nZ][y][x + 1] += 1;
-      if (cardMap[nZ][y - 1]?.[x] >= 0) cardMap[nZ][y - 1][x] += 1;
-      if (cardMap[nZ][y - 1]?.[x - 1] >= 0) cardMap[nZ][y - 1][x - 1] += 1;
-      if (cardMap[nZ][y - 1]?.[x + 1] >= 0) cardMap[nZ][y - 1][x + 1] += 1;
-      if (cardMap[nZ][y + 1]?.[x] >= 0) cardMap[nZ][y + 1][x] += 1;
-      if (cardMap[nZ][y + 1]?.[x - 1] >= 0) cardMap[nZ][y + 1][x - 1] += 1;
-      if (cardMap[nZ][y + 1]?.[x + 1] >= 0) cardMap[nZ][y + 1][x + 1] += 1;
+    for (let i = z - 1; i >= 0; i--) {
+      if (cardMap[i][y][x] >= 0) cardMap[i][y][x] += 1;
+      if (cardMap[i][y]?.[x - 1] >= 0) cardMap[i][y][x - 1] += 1;
+      if (cardMap[i][y]?.[x + 1] >= 0) cardMap[i][y][x + 1] += 1;
+      if (cardMap[i][y - 1]?.[x] >= 0) cardMap[i][y - 1][x] += 1;
+      if (cardMap[i][y - 1]?.[x - 1] >= 0) cardMap[i][y - 1][x - 1] += 1;
+      if (cardMap[i][y - 1]?.[x + 1] >= 0) cardMap[i][y - 1][x + 1] += 1;
+      if (cardMap[i][y + 1]?.[x] >= 0) cardMap[i][y + 1][x] += 1;
+      if (cardMap[i][y + 1]?.[x - 1] >= 0) cardMap[i][y + 1][x - 1] += 1;
+      if (cardMap[i][y + 1]?.[x + 1] >= 0) cardMap[i][y + 1][x + 1] += 1;
     }
   }
 

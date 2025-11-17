@@ -8,10 +8,11 @@
         'yang-le-game__block--isTop': item.isTop,
       }"
       :style="{
-        left: (item.x / 2) * 60 + 'px',
-        top: (item.y / 2) * 60 + 'px',
+        left: (item.x / 2) * 45 + 'px',
+        top: (item.y / 2) * 45 + 'px',
         zIndex: item.z,
       }"
+      @click="onClickCard(item)"
     ></div>
   </div>
 </template>
@@ -22,29 +23,40 @@ import { useCardMap, type CardData } from "./gameLogic/cardMap";
 
 const cardArr = ref<CardData[]>([]);
 
-cardArr.value = useCardMap({
+const { cardDataList, removeCard } = useCardMap({
   mapTemplate: [
-    // ["o", "o", "o", "o", "o", "o", "o"],
-    // ["o", "o", "o", "o", "o", "o", "o"],
-    // ["o", "o", "o", "o", "o", "o", "o"],
-    // ["x", "o", "o", "o", "o", "o", "x"],
-    // ["x", "o", "o", "o", "o", "o", "x"],
-    // ["x", "o", "o", "o", "o", "o", "x"],
-    // ["x", "o", "o", "o", "o", "o", "x"],
-    // ["x", "o", "o", "o", "o", "o", "x"],
+    ["o", "o", "o", "o", "o", "o", "o"],
+    ["o", "o", "o", "o", "o", "o", "o"],
+    ["o", "o", "o", "o", "o", "o", "o"],
+    ["x", "o", "o", "o", "o", "o", "x"],
+    ["x", "o", "o", "o", "o", "o", "x"],
+    ["x", "o", "o", "o", "o", "o", "x"],
+    ["x", "o", "o", "o", "o", "o", "x"],
+    ["x", "o", "o", "o", "o", "o", "x"],
 
     // ["o", "o", "o"],
     // ["o", "x", "o"],
     // ["o", "o", "o"],
-    ["o", "o"],
+    // ["o", "o"],
   ],
   arrangeRule: "random",
-  cardCount: 6,
+  cardCount: 120,
 });
+
+cardArr.value = cardDataList;
+
+/**
+ * 点击卡片事件
+ * @param item 卡片数据
+ */
+function onClickCard(item: CardData) {
+  const newCardArr = removeCard(item);
+  cardArr.value = newCardArr;
+}
 </script>
 
 <style lang="scss" scoped>
-$block-size: 60px; // 块尺寸
+$block-size: 40px; // 块尺寸
 
 .yang-le-game {
   position: relative;
@@ -53,7 +65,7 @@ $block-size: 60px; // 块尺寸
     position: absolute;
     width: $block-size;
     height: $block-size;
-    background-color: green;
+    background: url("@/assets/konglong.png") no-repeat center center/cover;
     box-shadow: 0 0 5px black;
 
     &::before {
